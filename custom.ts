@@ -61,6 +61,3 @@ radio.onReceivedValue(function (name, value) {
 radio.setGroup(101)
 radio.setTransmitSerialNumber(true)
 radio.setTransmitPower(7)
-let serialRead = ""
-let identity=-1
-let doCommands = false

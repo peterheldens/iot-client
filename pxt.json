@@ -3,7 +3,8 @@
     "description": "",
     "dependencies": {
         "core": "*",
-        "radio": "*"
+        "radio": "*",
+        "iot c2d": "github:peterheldens/iot-c2d#master"
     },
     "files": [
         "main.blocks",
