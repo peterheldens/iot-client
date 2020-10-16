@@ -4,7 +4,7 @@
     "dependencies": {
         "core": "*",
         "radio": "*",
-        "iot c2d": "github:peterheldens/iot-c2d#master"
+        "iot c2d": "github:peterheldens/iot-c2d#63714ff641eb623ab9377cacce514db72a589df2"
     },
     "files": [
         "main.blocks",
