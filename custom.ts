@@ -9,7 +9,8 @@
  */
 //% weight=100 color=#0fbc11 icon=""
 namespace IoT_client {
-        //% block
+    let group = 101
+    //% block
     export function register_device () {
         basic.clearScreen()
         if (identity < 0) {
@@ -38,6 +39,12 @@ namespace IoT_client {
     //% block
     export function showRadioChannel(): number {
         return(101)
+    }
+
+    //% block
+    export function setRadioChannel(n:number) {
+        group = n
+        radio.setGroup(n)
     }
 }
 
