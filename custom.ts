@@ -18,7 +18,7 @@ namespace IoT_client {
     let propString: string[] = []
     let propValue: number[] = []
 
-    setRadioChannel(101)
+    radio.setGroup(101)
     radio.setTransmitSerialNumber(true)
     radio.setTransmitPower(7)
 
@@ -34,25 +34,25 @@ namespace IoT_client {
         }    
     }
 
-    //%block="enable telemetry = $b"
+    //%block="telemetry $b"
     //% b.shadow="toggleOnOff"
     export function sendTelemetry(b: boolean) {
         doTelemetry = b
     }
 
-    //%block="enable property = $b"
+    //%block="property $b"
     //% b.shadow="toggleOnOff"
     export function sendProperty(b: boolean) {
         doProperty = b
     }
 
-    //%block="enable device2cloud = $b"
+    //%block="device2cloud $b"
     //% b.shadow="toggleOnOff"
     export function sendD2C(b: boolean) {
         doTelemetry = b
     }
 
-    //%block="enable debug info = $b"
+    //%block="debug $b"
     //% b.shadow="toggleOnOff"
     export function sendDebug(b: boolean) {
         doTelemetry = b
@@ -83,16 +83,6 @@ namespace IoT_client {
         } else {
             basic.showString("already deleted")
         }
-    }
-    //% block
-    export function showRadioChannel(): number {
-        return(radioGroup)
-    }
-
-    //% block
-    export function setRadioChannel(n:number) {
-        radioGroup = n
-        radio.setGroup(n)
     }
 
     function telemetry () {
@@ -148,8 +138,7 @@ namespace IoT_client {
         }
     }
 
-    //%block
-    export function property () {
+    function property () {
     // send device property to the cloud
     if (doProperty) {
         while (propString.length > 0) {
