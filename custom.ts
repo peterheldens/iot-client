@@ -10,34 +10,49 @@
 //% weight=100 color=#0fbc11 icon=""
 namespace IoT_client {
     let radioGroup = 101
+    let identity = -1 // TODO define identity
     let doTelemetry = true
     let doProperty = true
     let doD2C = true
     let doDebug = true
+    let propString: string[] = []
+    let propValue: number[] = []
 
     setRadioChannel(101)
     radio.setTransmitSerialNumber(true)
     radio.setTransmitPower(7)
 
-    //%block="send telemetry = $b"
+    //%block="submit property | name = $p | value = $v"
+    export function addProperty(p: string, v:number) {
+        const index = propString.indexOf(p)
+        if ( index < 0) {
+            propString.push(p)
+            propValue.push(v)
+        } else {
+            propString[index] = p
+            propValue[index] = v
+        }    
+    }
+
+    //%block="enable telemetry = $b"
     //% b.shadow="toggleOnOff"
     export function sendTelemetry(b: boolean) {
         doTelemetry = b
     }
 
-    //%block="send property = $b"
+    //%block="enable property = $b"
     //% b.shadow="toggleOnOff"
     export function sendProperty(b: boolean) {
         doProperty = b
     }
 
-    //%block="send device2cloud = $b"
+    //%block="enable device2cloud = $b"
     //% b.shadow="toggleOnOff"
     export function sendD2C(b: boolean) {
         doTelemetry = b
     }
 
-    //%block="send debug info = $b"
+    //%block="enable debug info = $b"
     //% b.shadow="toggleOnOff"
     export function sendDebug(b: boolean) {
         doTelemetry = b
@@ -81,8 +96,9 @@ namespace IoT_client {
     }
 
     function telemetry () {
+        // send telemetry to the cloud
         if (doTelemetry) {
-            radio.sendValue("id", identity)
+            radio.sendValue("id", identity) //TODO: define identity
             basic.pause(delay)
             radio.sendValue("sn", 0)
             basic.pause(delay)
@@ -132,6 +148,19 @@ namespace IoT_client {
         }
     }
 
+    //%block
+    export function property () {
+    // send device property to the cloud
+    if (doProperty) {
+        while (propString.length > 0) {
+            const s=propString.pop()
+            const v=propValue.pop()
+            radio.sendValue(s, v)
+            basic.pause(delay)
+            }
+        }
+    }
+
     function debug () {
         // send debug info to the cloud
         if (doDebug) {
@@ -150,6 +179,7 @@ namespace IoT_client {
         if (identity >= 0) {
             if (name == "token" && value == control.deviceSerialNumber()) {
                 telemetry()
+                property()
                 device2cloud()
                 debug()
                 eom()
